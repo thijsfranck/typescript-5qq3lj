@@ -34,13 +34,13 @@ export class GameState {
     const oldSolutionSpaceSize = this.solutionSpace.size;
     const oldSymbolSpaceSize = this.symbolSpace.size;
 
-    this.limitSolutionSpace(guess, new Set(alternatives), bulls, cows);
+    this.limitSolutionSpace(guess, alternatives, bulls, cows);
 
     const turn: Turn = {
       guess,
       bulls,
       cows,
-      alternatives: alternatives.length,
+      alternatives: alternatives.size,
       oldSolutionSpace: oldSolutionSpaceSize,
       newSolutionSpace: this.solutionSpace.size,
       oldSymbolSpace: oldSymbolSpaceSize,
@@ -68,7 +68,7 @@ export class GameState {
   private makeGuess() {
     const alternatives = makeEducatedGuess(this.turns, this.solutionSpace),
       guess = makeRandomGuess(alternatives);
-    return [alternatives, guess] as const;
+    return [new Set(alternatives), guess] as const;
   }
 
   private limitSolutionSpace(
