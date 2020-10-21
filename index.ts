@@ -15,7 +15,6 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   const solution = makeRandomGuess(gameState.solutionSpace);
 
   console.log("Solving...");
-
   while (!gameState.trySolve(solution));
 
   console.log(`Solved ${solution} in ${gameState.turns.length} turns!`);
