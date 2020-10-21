@@ -1,4 +1,4 @@
-import { difference, intersection, isSubset } from "mnemonist/set";
+import { difference, intersection } from "mnemonist/set";
 import VPTree from "mnemonist/vp-tree";
 import { buildBullsSearchTree } from "./build-bulls-search-tree";
 import { buildCowsSearchTree } from "./build-cows-search-tree";
