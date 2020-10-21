@@ -79,7 +79,6 @@ export class GameState {
       const byCows = cowsSearch(this._cowsSearchTree, guess, cows);
       this._solutionSpace = intersection(this.solutionSpace, byBulls, byCows);
     }
-
     this._solutionSpace.delete(guess);
   }
 
