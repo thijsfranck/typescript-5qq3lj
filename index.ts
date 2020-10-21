@@ -62,7 +62,7 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
         solutionSpace,
         calculateSolutionSpace(symbolSpace, solutionLength)
       );
-    } else if (bulls < solutionLength && cows > 1) {
+    } else if (bulls < solutionLength) {
       const byBulls = bullsSearch(bullsSearchTree, guess, bulls);
       const byCows = cowsSearch(cowsSearchTree, guess, cows);
       solutionSpace = intersection(solutionSpace, byBulls, byCows);
