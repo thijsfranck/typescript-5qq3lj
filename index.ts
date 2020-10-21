@@ -1,17 +1,4 @@
-import {
-  bullsDistance,
-  bullsSearch,
-  buildBullsSearchTree,
-  buildCowsSearchTree,
-  calculateSolutionSpace,
-  calculateSymbolSpace,
-  cowsDistance,
-  cowsSearch,
-  makeEducatedGuess,
-  makeRandomGuess,
-  Turn
-} from "./game";
-import { difference, intersection } from "mnemonist/set";
+import { GameState, makeRandomGuess } from "./game";
 
 async function game(symbolSpaceLength: number, solutionLength: number) {
   console.log(
@@ -23,59 +10,20 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 
   console.time("Solved");
 
-  let symbolSpace = calculateSymbolSpace(symbolSpaceLength),
-    solutionSpace = calculateSolutionSpace(symbolSpace, solutionLength);
-
-  const bullsSearchTree = buildBullsSearchTree(solutionSpace),
-    cowsSearchTree = buildCowsSearchTree(symbolSpace, solutionLength);
+  const gameState = new GameState(symbolSpaceLength, solutionLength);
 
   console.log("Picking a solution...");
-  const solution = makeRandomGuess(solutionSpace);
-
-  const turns: Turn[] = [];
-  let bulls = 0,
-    cows = 0;
+  const solution = makeRandomGuess(gameState.solutionSpace);
 
   console.log("Solving...");
 
-  do {
-    const alternatives = makeEducatedGuess(turns, solutionSpace),
-      guess = makeRandomGuess(alternatives);
-
-    bulls = guess.length - bullsDistance(solution, guess);
-    cows = guess.length - cowsDistance(new Set(guess), new Set(solution));
-
-    const turn = {
-      guess,
-      bulls,
-      cows,
-      solutionSpace: solutionSpace.size,
-      alternatives: alternatives.length
-    };
-
-    turns.push(turn);
-    console.debug(turn);
-
-    if (cows === 0) {
-      symbolSpace = difference(symbolSpace, new Set(guess));
-      solutionSpace = intersection(
-        solutionSpace,
-        calculateSolutionSpace(symbolSpace, solutionLength)
-      );
-    } else if (bulls < solutionLength) {
-      const byBulls = bullsSearch(bullsSearchTree, guess, bulls);
-      const byCows = cowsSearch(cowsSearchTree, guess, cows);
-      solutionSpace = intersection(solutionSpace, byBulls, byCows);
-    }
-
-    solutionSpace.delete(guess);
-  } while (bulls < solutionLength);
+  while (!gameState.trySolve(solution));
 
   console.timeEnd("Solved");
-  console.log(`Solved ${solution} in ${turns.length} turns!`);
-  console.table(turns);
+  console.log(`Solved ${solution} in ${gameState.turns.length} turns!`);
+  console.table(gameState.turns);
 }
 
 const d = 10;
-const n = 6;
+const n = 4;
 game(d, n);

@@ -1,11 +1,6 @@
 import DefaultMap from "mnemonist/default-map";
 import { enumerate } from "../utils";
-
-export interface Turn {
-  readonly guess: string;
-  readonly cows: number;
-  readonly bulls: number;
-}
+import {Turn} from "./game-state";
 
 export function makeEducatedGuess(
   turns: Iterable<Turn>,
