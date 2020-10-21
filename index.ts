@@ -8,7 +8,7 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
   );
   console.log("Preparing the game...");
 
-  console.time("Solved");
+  console.time("Processing time");
 
   const gameState = new GameState(symbolSpaceLength, solutionLength);
 
@@ -19,8 +19,8 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 
   while (!gameState.trySolve(solution));
 
-  console.timeEnd("Solved");
   console.log(`Solved ${solution} in ${gameState.turns.length} turns!`);
+  console.timeEnd("Processing time");
   console.table(gameState.turns);
 }
 
