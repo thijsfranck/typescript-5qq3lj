@@ -1,6 +1,6 @@
 import DefaultMap from "mnemonist/default-map";
 import { enumerate } from "../utils";
-import {Turn} from "./game-state";
+import { Turn } from "./game-state";
 
 export function makeEducatedGuess(
   turns: Iterable<Turn>,
