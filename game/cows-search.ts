@@ -10,9 +10,7 @@ export function cowsSearch(
 ): Set<string> {
   const distance = query.length - cows;
 
-  if (distance === 0) {
-    return calculateSolutionSpace(query, query.length);
-  }
+  if (distance === 0) return calculateSolutionSpace(query, query.length);
 
   if (!isQuerySorted) {
     query = query
