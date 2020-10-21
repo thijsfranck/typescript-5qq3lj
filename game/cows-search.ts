@@ -11,7 +11,7 @@ export function cowsSearch(
   const distance = query.length - cows;
 
   if (distance === 0) {
-    return calculateSolutions([query]);
+    return calculateSolutionSpace(query, query.length);
   }
 
   if (!isQuerySorted) {
@@ -23,13 +23,10 @@ export function cowsSearch(
 
   const neighbors = tree.neighbors(query.length - cows, query);
 
-  return calculateSolutions(neighbors.map(neighbor => neighbor.item));
-}
-
-function calculateSolutions(items: Iterable<string>) {
   const result = new Set<string>();
-  for (const item of items) {
+  for (const { item } of neighbors) {
     add(result, calculateSolutionSpace(item, item.length));
   }
+
   return result;
 }
