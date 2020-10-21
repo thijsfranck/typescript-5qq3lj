@@ -3,13 +3,13 @@ import VPTree from "mnemonist/vp-tree";
 import { buildBullsSearchTree } from "./build-bulls-search-tree";
 import { buildCowsSearchTree } from "./build-cows-search-tree";
 import { bullsSearch } from "./bulls-search";
+import { calculateBullsAndCows } from "./calculate-bulls-and-cows";
 import { calculateSolutionSpace } from "./calculate-solution-space";
 import { cowsSearch } from "./cows-search";
 import { makeEducatedGuess } from "./make-educated-guess";
 import { makeRandomGuess } from "./make-random-guess";
 import { calculateSymbolSpace } from " ./symbols";
 import { Turn } from "./types";
-import { calculateBullsAndCows } from "./calculate-bulls-and-cows";
 
 export class GameState {
   readonly turns: Turn[] = [];
