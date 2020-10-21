@@ -77,5 +77,5 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 }
 
 const d = 10;
-const n = 4;
+const n = 6;
 game(d, n);
