@@ -10,6 +10,11 @@ export function bullsSearch(
   if (distance === 0) return new Set([query]);
 
   const neighbors = tree.neighbors(query.length - bulls, query);
-  const solutions = neighbors.map(neighbor => neighbor.item);
-  return new Set(solutions);
+
+  const result = new Set<string>();
+  for (const neighbor of neighbors) {
+    result.add(neighbor.item);
+  }
+
+  return result;
 }
