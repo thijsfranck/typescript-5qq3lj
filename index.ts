@@ -6,10 +6,9 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
     `Possible characters: ${symbolSpaceLength}`,
     `Solution length: ${solutionLength}`
   );
-  console.log("Preparing the game...");
-
   console.time("Processing time");
 
+  console.log("Preparing the game...");
   const gameState = new GameState(symbolSpaceLength, solutionLength);
 
   console.log("Picking a solution...");
