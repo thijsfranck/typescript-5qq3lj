@@ -45,7 +45,7 @@ export class GameState {
 
     this.limitSolutionSpace(guess, bulls, cows);
 
-    const turn = {
+    const turn: Turn = {
       guess,
       bulls,
       cows,
