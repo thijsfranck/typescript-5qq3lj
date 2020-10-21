@@ -23,16 +23,7 @@ export class GameState {
     readonly symbolSpaceLength: number,
     readonly solutionLength: number
   ) {
-    this._symbolSpace = calculateSymbolSpace(this.symbolSpaceLength);
-    this._solutionSpace = calculateSolutionSpace(
-      this.symbolSpace,
-      this.solutionLength
-    );
-    this._bullsSearchTree = buildBullsSearchTree(this.solutionSpace);
-    this._cowsSearchTree = buildCowsSearchTree(
-      this.symbolSpace,
-      this.solutionLength
-    );
+    this.init();
   }
 
   trySolve(solution: string) {
@@ -59,6 +50,19 @@ export class GameState {
     this.turns.push(turn);
 
     return bulls === this.solutionLength;
+  }
+
+  private init() {
+    this._symbolSpace = calculateSymbolSpace(this.symbolSpaceLength);
+    this._solutionSpace = calculateSolutionSpace(
+      this.symbolSpace,
+      this.solutionLength
+    );
+    this._bullsSearchTree = buildBullsSearchTree(this.solutionSpace);
+    this._cowsSearchTree = buildCowsSearchTree(
+      this.symbolSpace,
+      this.solutionLength
+    );
   }
 
   private makeGuess() {
