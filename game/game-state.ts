@@ -1,4 +1,4 @@
-import { difference, intersection } from "mnemonist/set";
+import { difference, intersection, isSubset } from "mnemonist/set";
 import VPTree from "mnemonist/vp-tree";
 import { buildBullsSearchTree } from "./build-bulls-search-tree";
 import { buildCowsSearchTree } from "./build-cows-search-tree";
@@ -34,7 +34,7 @@ export class GameState {
     const oldSolutionSpaceSize = this.solutionSpace.size;
     const oldSymbolSpaceSize = this.symbolSpace.size;
 
-    this.limitSolutionSpace(guess, bulls, cows);
+    this.limitSolutionSpace(guess, new Set(alternatives), bulls, cows);
 
     const turn: Turn = {
       guess,
@@ -71,18 +71,26 @@ export class GameState {
     return [alternatives, guess] as const;
   }
 
-  private limitSolutionSpace(guess: string, bulls: number, cows: number) {
+  private limitSolutionSpace(
+    guess: string,
+    alternatives: Set<string>,
+    bulls: number,
+    cows: number
+  ) {
+    if (bulls === this.solutionLength) return;
+
     if (cows === 0) {
       this._symbolSpace = difference(this.symbolSpace, new Set(guess));
       this._solutionSpace = intersection(
-        this._solutionSpace,
+        alternatives,
         calculateSolutionSpace(this.symbolSpace, this.solutionLength)
       );
-    } else if (bulls < this.solutionLength) {
+    } else {
       const byBulls = bullsSearch(this._bullsSearchTree, guess, bulls);
       const byCows = cowsSearch(this._cowsSearchTree, guess, cows);
-      this._solutionSpace = intersection(this.solutionSpace, byBulls, byCows);
+      this._solutionSpace = intersection(alternatives, byBulls, byCows);
     }
+
     this._solutionSpace.delete(guess);
   }
 
