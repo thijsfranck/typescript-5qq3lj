@@ -10,7 +10,7 @@ export interface Turn {
 export function makeEducatedGuess(
   turns: Iterable<Turn>,
   solutionSpace: Iterable<string>
-) {
+): string[] {
   const [bullsWeight, cowsWeight] = weighSymbols(turns);
   return makeGuess(bullsWeight, cowsWeight, solutionSpace);
 }
@@ -55,7 +55,5 @@ function makeGuess(
     }
   }
 
-  const guess = Math.floor(Math.random() * alternatives.length);
-
-  return alternatives[guess];
+  return alternatives;
 }

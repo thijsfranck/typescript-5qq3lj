@@ -1,8 +1,5 @@
-import { enumerate } from "../utils";
-
-export function makeRandomGuess(solutionSpace: Set<string>) {
-  const guess = Math.floor(Math.random() * solutionSpace.size);
-  for (const [item, index] of enumerate(solutionSpace)) {
-    if (guess === index) return item;
-  }
+export function makeRandomGuess(solutionSpace: Iterable<string>) {
+  if (!Array.isArray(solutionSpace)) solutionSpace = [...solutionSpace];
+  const guess = Math.floor(Math.random() * solutionSpace.length);
+  return solutionSpace[guess];
 }
