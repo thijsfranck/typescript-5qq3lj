@@ -27,6 +27,7 @@ export function memoize<T, R>(
   function memoized(...args: T[]) {
     const key = resolver.apply(null, args);
 
+    if (cache.has(key)) console.log("Cache hit");
     if (cache.has(key)) return cache.get(key);
 
     const result = func.apply(null, args);

@@ -23,5 +23,5 @@ async function game(symbolSpaceLength: number, solutionLength: number) {
 }
 
 const d = 10;
-const n = 7;
+const n = 4;
 game(d, n);
