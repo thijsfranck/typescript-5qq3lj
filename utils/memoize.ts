@@ -1,3 +1,5 @@
+import LRUMap from "mnemonist/lru-map";
+
 const defaultCacheLimit = 1000;
 const defaultResolver: ResolverFunction<any> = (...[arg0]) => arg0;
 
@@ -20,7 +22,7 @@ export function memoize<T, R>(
     resolver = defaultResolver
   }: MemoizeOptions<T> = {}
 ): MemoizedFunction<T, R> {
-  const cache = new Map<string, R>();
+  const cache = new LRUMap<string, R>(cacheLimit);
 
   function memoized(...args: T[]) {
     const key = resolver.apply(null, args);
@@ -29,7 +31,6 @@ export function memoize<T, R>(
 
     const result = func.apply(null, args);
 
-    if (cache.size >= cacheLimit) cache.clear();
     cache.set(key, result);
 
     return result;

@@ -24,6 +24,8 @@ export class GameState {
   }
 
   trySolve(solution: string) {
+    console.time(`Turn ${this.turns.length + 1}`);
+
     const [alternatives, guess] = this.makeGuess();
 
     const [bulls, cows] = calculateBullsAndCows(solution, guess);
@@ -45,6 +47,8 @@ export class GameState {
     };
 
     this.turns.push(turn);
+
+    console.timeEnd(`Turn ${this.turns.length}`);
 
     return bulls === this.solutionLength;
   }
