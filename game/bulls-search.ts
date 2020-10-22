@@ -6,6 +6,7 @@ export function bullsSearch(
   const distance = query.length - bulls;
 
   if (distance === 0) return new Set([query]);
+  if (distance === query.length) return new Set(solutionSpace);
 
   const result = new Set<string>();
 

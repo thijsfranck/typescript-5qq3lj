@@ -7,10 +7,12 @@ export function cowsSearch(
 ): Set<string> {
   const distance = query.length - cows;
 
+  if (distance === query.length) return new Set(solutionSpace);
+
   const result = new Set<string>();
 
   for (const solution of solutionSpace) {
-    const solutionDistance = cowsDistance(solution, query);
+    const solutionDistance = cowsDistance(solution, query, distance);
     if (solutionDistance <= distance) result.add(solution);
   }
 
