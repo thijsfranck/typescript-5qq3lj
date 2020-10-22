@@ -1,6 +1,6 @@
 import LRUMap from "mnemonist/lru-map";
 
-const defaultCacheLimit = 1000;
+const defaultCacheLimit = 10000;
 const defaultResolver: ResolverFunction<any> = (...[arg0]) => arg0;
 
 export type ResolverFunction<T> = (...args: T[]) => string;
