@@ -28,10 +28,11 @@ export class GameState {
 
     const [bulls, cows] = calculateBullsAndCows(solution, guess);
 
-    const oldSolutionSpaceSize = this.solutionSpace.size;
-    const oldSymbolSpaceSize = this.symbolSpace.size;
+    const oldSolutionSpaceSize = this.solutionSpace.size,
+      oldSymbolSpaceSize = this.symbolSpace.size,
+      solved = bulls === this.solutionLength;
 
-    this.limitSolutionSpace(guess, alternatives, bulls, cows);
+    if (!solved) this.limitSolutionSpace(guess, alternatives, bulls, cows);
 
     const turn: Turn = {
       guess,
@@ -48,7 +49,7 @@ export class GameState {
 
     console.timeEnd(`Turn ${this.turns.length}`);
 
-    return bulls === this.solutionLength;
+    return solved;
   }
 
   private init() {
@@ -71,8 +72,6 @@ export class GameState {
     bulls: number,
     cows: number
   ) {
-    if (bulls === this.solutionLength) return;
-
     if (cows === 0) {
       this._symbolSpace = difference(this.symbolSpace, new Set(guess));
       this._solutionSpace = intersection(
