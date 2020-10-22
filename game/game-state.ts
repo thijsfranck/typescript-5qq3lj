@@ -1,6 +1,4 @@
 import { difference, intersection } from "mnemonist/set";
-import VPTree from "mnemonist/vp-tree";
-
 import { bullsSearch } from "./bulls-search";
 import { calculateBullsAndCows } from "./calculate-bulls-and-cows";
 import { calculateSolutionSpace } from "./calculate-solution-space";
