@@ -9,23 +9,30 @@ export function cowsSearch(
 
   if (distance === query.length) return new Set(solutionSpace);
 
+  const sortedQuery = query
+    .split("")
+    .sort()
+    .join("");
+
   const result = new Set<string>();
 
   for (const solution of solutionSpace) {
-    const solutionDistance = cowsDistance(solution, query, distance);
+    const solutionDistance = cowsDistance(solution, sortedQuery);
     if (solutionDistance <= distance) result.add(solution);
   }
 
   return result;
 }
 
-export function cowsDistance(a: string, b: string, limit = a.length) {
+export const cowsDistance = memoize(_cowsDistance, {
+  resolver: (a, b) => a.concat(b)
+});
+
+function _cowsDistance(a: string, b: string) {
   const charSet = toCharSet(b);
   let distance = 0;
   for (const char of a) {
-    if (charSet.has(char)) continue;
-    distance++;
-    if (distance > limit) return Infinity;
+    if (!charSet.has(char)) distance++;
   }
   return distance;
 }
