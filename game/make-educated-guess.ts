@@ -5,7 +5,7 @@ import { Turn } from "./game-state";
 export function makeEducatedGuess(
   turns: Iterable<Turn>,
   solutionSpace: Iterable<string>
-): string[] {
+): Array<string> {
   const [bullsWeight, cowsWeight] = weighSymbols(turns);
   return makeGuess(bullsWeight, cowsWeight, solutionSpace);
 }
@@ -19,8 +19,9 @@ function weighSymbols(turns: Iterable<Turn>) {
   for (const { bulls, cows, guess } of turns) {
     for (const [key, index] of enumerate(guess)) {
       const bullsWeightMap = bullsWeight.get(key);
-      bullsWeightMap.set(index, bullsWeightMap.get(index) + bulls);
-      cowsWeight.set(key, cowsWeight.get(key) + cows);
+      if (bulls > 0)
+        bullsWeightMap.set(index, bullsWeightMap.get(index) + bulls);
+      if (cows > 0) cowsWeight.set(key, cowsWeight.get(key) + cows);
     }
   }
   return [bullsWeight, cowsWeight] as const;
@@ -30,8 +31,11 @@ function makeGuess(
   bullsWeight: DefaultMap<string, DefaultMap<number, number>>,
   cowsWeight: DefaultMap<string, number>,
   solutionSpace: Iterable<string>
-) {
-  let alternatives = [],
+): Array<string> {
+  if (bullsWeight.size + cowsWeight.size === 0)
+    return Array.from(solutionSpace);
+
+  let alternatives: Array<string> = [],
     maxScore = -Infinity;
 
   for (const solution of solutionSpace) {

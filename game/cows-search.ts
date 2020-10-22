@@ -1,3 +1,4 @@
+import { difference } from "mnemonist/set";
 import { memoize } from "../utils";
 
 export function cowsSearch(
@@ -26,12 +27,7 @@ export const cowsDistance = memoize(_cowsDistance, {
 });
 
 function _cowsDistance(a: string, b: string) {
-  const charSet = toCharSet(b);
-  let distance = 0;
-  for (const char of a) {
-    if (!charSet.has(char)) distance++;
-  }
-  return distance;
+  return difference(toCharSet(a), toCharSet(b)).size;
 }
 
 const sortString = memoize((a: string) =>

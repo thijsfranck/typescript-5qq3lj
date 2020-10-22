@@ -24,7 +24,9 @@ export class GameState {
   trySolve(solution: string) {
     console.time(`Turn ${this.turns.length + 1}`);
 
+    console.time(`Guessing...`);
     const [alternatives, guess] = this.makeGuess();
+    console.timeEnd(`Guessing...`);
 
     const [bulls, cows] = calculateBullsAndCows(solution, guess);
 
@@ -38,7 +40,7 @@ export class GameState {
       guess,
       bulls,
       cows,
-      alternatives: alternatives.size,
+      alternatives: alternatives.length,
       oldSolutionSpace: oldSolutionSpaceSize,
       newSolutionSpace: this.solutionSpace.size,
       oldSymbolSpace: oldSymbolSpaceSize,
@@ -63,24 +65,30 @@ export class GameState {
   private makeGuess() {
     const alternatives = makeEducatedGuess(this.turns, this.solutionSpace),
       guess = makeRandomGuess(alternatives);
-    return [new Set(alternatives), guess] as const;
+    return [alternatives, guess] as const;
   }
 
   private limitSolutionSpace(
     guess: string,
-    alternatives: Set<string>,
+    alternatives: Iterable<string>,
     bulls: number,
     cows: number
   ) {
     if (cows === 0) {
       this._symbolSpace = difference(this.symbolSpace, new Set(guess));
       this._solutionSpace = intersection(
-        alternatives,
+        new Set(alternatives),
         calculateSolutionSpace(this.symbolSpace, this.solutionLength)
       );
     } else {
+      console.time(`Bulls search...`);
       const byBulls = bullsSearch(alternatives, guess, bulls);
+      console.timeEnd(`Bulls search...`);
+
+      console.time(`Cows search...`);
       const byCows = cowsSearch(alternatives, guess, cows);
+      console.timeEnd(`Cows search...`);
+
       this._solutionSpace = intersection(byBulls, byCows);
     }
 
