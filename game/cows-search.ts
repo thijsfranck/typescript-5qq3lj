@@ -1,30 +1,31 @@
-import VPTree from "mnemonist/vp-tree";
-import { add } from "mnemonist/set";
-import { calculateSolutionSpace } from "./calculate-solution-space";
+import { memoize } from "../utils";
 
 export function cowsSearch(
-  tree: VPTree<string>,
+  solutionSpace: Iterable<string>,
   query: string,
-  cows: number,
-  isQuerySorted = false
+  cows: number
 ): Set<string> {
   const distance = query.length - cows;
 
-  if (distance === 0) return calculateSolutionSpace(query, query.length);
-
-  if (!isQuerySorted) {
-    query = query
-      .split("")
-      .sort()
-      .join("");
-  }
-
-  const neighbors = tree.neighbors(query.length - cows, query);
-
   const result = new Set<string>();
-  for (const { item } of neighbors) {
-    add(result, calculateSolutionSpace(item, item.length));
+
+  for (const solution of solutionSpace) {
+    const solutionDistance = cowsDistance(solution, query);
+    if (solutionDistance <= distance) result.add(solution);
   }
 
   return result;
 }
+
+export function cowsDistance(a: string, b: string, limit = a.length) {
+  const charSet = toCharSet(b);
+  let distance = 0;
+  for (const char of a) {
+    if (charSet.has(char)) continue;
+    distance++;
+    if (distance > limit) return Infinity;
+  }
+  return distance;
+}
+
+const toCharSet = memoize((a: string) => new Set(a));

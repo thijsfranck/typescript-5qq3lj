@@ -1,7 +1,5 @@
-import VPTree from "mnemonist/vp-tree";
-
 export function bullsSearch(
-  tree: VPTree<string>,
+  solutionSpace: Iterable<string>,
   query: string,
   bulls: number
 ): Set<string> {
@@ -9,12 +7,22 @@ export function bullsSearch(
 
   if (distance === 0) return new Set([query]);
 
-  const neighbors = tree.neighbors(query.length - bulls, query);
-
   const result = new Set<string>();
-  for (const neighbor of neighbors) {
-    result.add(neighbor.item);
+
+  for (const solution of solutionSpace) {
+    const solutionDistance = bullsDistance(query, solution, distance);
+    if (solutionDistance <= distance) result.add(solution);
   }
 
   return result;
+}
+
+export function bullsDistance(a: string, b: string, limit: number = a.length) {
+  let distance = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] === b[i]) continue;
+    distance++;
+    if (distance > limit) return Infinity;
+  }
+  return distance;
 }

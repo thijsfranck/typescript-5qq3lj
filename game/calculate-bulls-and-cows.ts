@@ -1,8 +1,8 @@
-import { bullsDistance } from "./build-bulls-search-tree";
-import { cowsDistance } from "./build-cows-search-tree";
+import { bullsDistance } from "./bulls-search";
+import { cowsDistance } from "./cows-search";
 
 export function calculateBullsAndCows(solution: string, guess: string) {
-  const bulls = guess.length - bullsDistance(solution, guess);
-  const cows = guess.length - cowsDistance(new Set(guess), new Set(solution));
+  const bulls = guess.length - bullsDistance(guess, solution);
+  const cows = guess.length - cowsDistance(guess, solution);
   return [bulls, cows] as const;
 }

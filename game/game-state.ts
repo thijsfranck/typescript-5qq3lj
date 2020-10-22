@@ -1,7 +1,6 @@
 import { difference, intersection } from "mnemonist/set";
 import VPTree from "mnemonist/vp-tree";
-import { buildBullsSearchTree } from "./build-bulls-search-tree";
-import { buildCowsSearchTree } from "./build-cows-search-tree";
+
 import { bullsSearch } from "./bulls-search";
 import { calculateBullsAndCows } from "./calculate-bulls-and-cows";
 import { calculateSolutionSpace } from "./calculate-solution-space";
@@ -14,8 +13,6 @@ import { Turn } from "./types";
 export class GameState {
   readonly turns: Turn[] = [];
 
-  private _bullsSearchTree: VPTree<string>;
-  private _cowsSearchTree: VPTree<string>;
   private _solutionSpace: Set<string>;
   private _symbolSpace: Set<string>;
 
@@ -58,11 +55,6 @@ export class GameState {
       this.symbolSpace,
       this.solutionLength
     );
-    this._bullsSearchTree = buildBullsSearchTree(this.solutionSpace);
-    this._cowsSearchTree = buildCowsSearchTree(
-      this.symbolSpace,
-      this.solutionLength
-    );
   }
 
   private makeGuess() {
@@ -86,9 +78,9 @@ export class GameState {
         calculateSolutionSpace(this.symbolSpace, this.solutionLength)
       );
     } else {
-      const byBulls = bullsSearch(this._bullsSearchTree, guess, bulls);
-      const byCows = cowsSearch(this._cowsSearchTree, guess, cows);
-      this._solutionSpace = intersection(alternatives, byBulls, byCows);
+      const byBulls = bullsSearch(alternatives, guess, bulls);
+      const byCows = cowsSearch(alternatives, guess, cows);
+      this._solutionSpace = intersection(byBulls, byCows);
     }
 
     this._solutionSpace.delete(guess);
