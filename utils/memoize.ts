@@ -3,26 +3,28 @@ import LRUMap from "mnemonist/lru-map";
 const defaultCacheLimit = 10000;
 const defaultResolver: ResolverFunction<any> = (...[arg0]) => arg0;
 
-export type ResolverFunction<T> = (...args: T[]) => string;
+export type ResolverFunction<T extends (...args: any[]) => any> = (
+  ...args: Parameters<T>
+) => string;
 
-export type MemoizedFunction<T, R> = {
-  (...args: T[]): R;
-  readonly cache: Map<string, R>;
+export type MemoizedFunction<T extends (...args: any[]) => any> = {
+  (...args: Parameters<T>): ReturnType<T>;
+  readonly cache: Map<string, ReturnType<T>>;
 };
 
-export interface MemoizeOptions<T> {
+export interface MemoizeOptions<T extends (...args: any[]) => any> {
   readonly cacheLimit?: number;
   readonly resolver?: ResolverFunction<T>;
 }
 
-export function memoize<T, R>(
-  func: (...args: T[]) => R,
+export function memoize<T extends (...args: any[]) => any>(
+  func: T,
   {
     cacheLimit = defaultCacheLimit,
     resolver = defaultResolver
   }: MemoizeOptions<T> = {}
-): MemoizedFunction<T, R> {
-  const cache = new LRUMap<string, R>(cacheLimit);
+): MemoizedFunction<T> {
+  const cache = new LRUMap<string, ReturnType<T>>(cacheLimit);
 
   function memoized(...args: T[]) {
     const key = resolver.apply(null, args);
