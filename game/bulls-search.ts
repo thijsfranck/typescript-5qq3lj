@@ -18,7 +18,7 @@ export function bullsSearch(
   return result;
 }
 
-export function bullsDistance(a: string, b: string, limit: number = a.length) {
+export function bullsDistance(a: string, b: string, limit = a.length) {
   let distance = 0;
   for (let i = 0; i < a.length; i++) {
     if (a[i] === b[i]) continue;
