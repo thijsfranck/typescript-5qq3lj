@@ -10,7 +10,7 @@ export type ResolverFunction<T extends MemoizableFunction> = (
 ) => string;
 
 export type MemoizedFunction<T extends MemoizableFunction> = {
-  readonly(...args: Parameters<T>): ReturnType<T>;
+  (...args: Parameters<T>): ReturnType<T>;
   readonly cache: Map<string, ReturnType<T>>;
 };
 
