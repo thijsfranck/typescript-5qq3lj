@@ -10,7 +10,7 @@ export type ResolverFunction<T extends MemoizableFunction> = (
 ) => string;
 
 export type MemoizedFunction<T extends MemoizableFunction> = {
-  (...args: Parameters<T>): ReturnType<T>;
+  readonly(...args: Parameters<T>): ReturnType<T>;
   readonly cache: Map<string, ReturnType<T>>;
 };
 
@@ -28,7 +28,7 @@ export function memoize<T extends MemoizableFunction>(
 ): MemoizedFunction<T> {
   const cache = new LRUMap<string, ReturnType<T>>(cacheLimit);
 
-  function memoized(...args: T[]) {
+  function memoized(...args: Parameters<T>) {
     const key = resolver.apply(null, args);
 
     if (cache.has(key)) return cache.get(key);
