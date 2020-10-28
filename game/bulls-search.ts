@@ -20,7 +20,7 @@ export function bullsSearch(
 
 export function bullsDistance(a: string, b: string, limit = a.length) {
   let distance = 0;
-  for (let i = 0; i < a.length; i++) {
+  for (let i = 0, l = a.length; i < l; i++) {
     if (a[i] === b[i]) continue;
     distance++;
     if (distance > limit) return Infinity;
